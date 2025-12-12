@@ -8,11 +8,17 @@ import { toast } from "sonner";
 
 interface ActiveCallScreenProps {
   onEndCall: () => void;
+  onConnectionChange?: (connected: boolean) => void;
+  onDurationChange?: (duration: number) => void;
 }
 
 const ELEVENLABS_AGENT_ID = "agent_3001kc4yga6xf66bew5chrddazj5";
 
-export const ActiveCallScreen = ({ onEndCall }: ActiveCallScreenProps) => {
+export const ActiveCallScreen = ({ 
+  onEndCall, 
+  onConnectionChange, 
+  onDurationChange 
+}: ActiveCallScreenProps) => {
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(true);
   const [duration, setDuration] = useState(0);
@@ -24,6 +30,7 @@ export const ActiveCallScreen = ({ onEndCall }: ActiveCallScreenProps) => {
       console.log("Connected to ElevenLabs agent");
       setIsConnected(true);
       setIsConnecting(false);
+      onConnectionChange?.(true);
       // Add welcome message
       setMessages([{
         id: "welcome",
@@ -35,6 +42,7 @@ export const ActiveCallScreen = ({ onEndCall }: ActiveCallScreenProps) => {
     onDisconnect: () => {
       console.log("Disconnected from ElevenLabs agent");
       setIsConnected(false);
+      onConnectionChange?.(false);
     },
     onMessage: (message) => {
       console.log("Message received:", message);
@@ -96,10 +104,14 @@ export const ActiveCallScreen = ({ onEndCall }: ActiveCallScreenProps) => {
   useEffect(() => {
     if (!isConnected) return;
     const interval = setInterval(() => {
-      setDuration((d) => d + 1);
+      setDuration((d) => {
+        const newDuration = d + 1;
+        onDurationChange?.(newDuration);
+        return newDuration;
+      });
     }, 1000);
     return () => clearInterval(interval);
-  }, [isConnected]);
+  }, [isConnected, onDurationChange]);
 
   const handleToggleRecording = useCallback(() => {
     // With ElevenLabs, the agent is always listening when connected

@@ -3,6 +3,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { CallProvider } from "./contexts/CallContext";
+import { FloatingCallIndicator } from "./components/FloatingCallIndicator";
 import Login from "./pages/Login";
 import CitizenDashboard from "./pages/CitizenDashboard";
 import OfficerDashboard from "./pages/OfficerDashboard";
@@ -14,18 +16,21 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/citizen" element={<CitizenDashboard />} />
-          <Route path="/officer" element={<OfficerDashboard />} />
-          <Route path="/call" element={<CallSimulator />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <CallProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/citizen" element={<CitizenDashboard />} />
+            <Route path="/officer" element={<OfficerDashboard />} />
+            <Route path="/call" element={<CallSimulator />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <FloatingCallIndicator />
+        </BrowserRouter>
+      </CallProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
