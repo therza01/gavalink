@@ -211,7 +211,3 @@ Proprietary - Kenya Revenue Authority
 ## 🤝 Contributing
 
 This is a government project. Contact the development team for contribution guidelines.
-
----
-
-Built with ❤️ using [Lovable](https://lovable.dev)
