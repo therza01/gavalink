@@ -9,6 +9,11 @@ import Login from "./pages/Login";
 import CitizenDashboard from "./pages/CitizenDashboard";
 import OfficerDashboard from "./pages/OfficerDashboard";
 import CallSimulator from "./pages/CallSimulator";
+import Returns from "./pages/Returns";
+import Payments from "./pages/Payments";
+import Documents from "./pages/Documents";
+import Applications from "./pages/Applications";
+import Support from "./pages/Support";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +30,11 @@ const App = () => (
             <Route path="/citizen" element={<CitizenDashboard />} />
             <Route path="/officer" element={<OfficerDashboard />} />
             <Route path="/call" element={<CallSimulator />} />
+            <Route path="/returns" element={<Returns />} />
+            <Route path="/payments" element={<Payments />} />
+            <Route path="/documents" element={<Documents />} />
+            <Route path="/applications" element={<Applications />} />
+            <Route path="/support" element={<Support />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
