@@ -1,14 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Building2, Shield, Lock, Mail, Phone, KeyRound } from "lucide-react";
+import { User, Building2, Shield, Lock, Mail, Phone, KeyRound, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+// Declare the custom element for TypeScript
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'elevenlabs-convai': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & { 'agent-id': string }, HTMLElement>;
+    }
+  }
+}
 
 const Login = () => {
   const navigate = useNavigate();
   const [citizenForm, setCitizenForm] = useState({ phone: "", password: "" });
   const [officerForm, setOfficerForm] = useState({ email: "", password: "", otp: "" });
+
+  // Track voice agent requests in localStorage for officer dashboard
+  useEffect(() => {
+    const handleVoiceInteraction = () => {
+      const currentCount = parseInt(localStorage.getItem('voiceAgentRequests') || '0');
+      localStorage.setItem('voiceAgentRequests', String(currentCount + 1));
+      localStorage.setItem('lastVoiceRequest', new Date().toISOString());
+    };
+
+    // Listen for any interaction with the voice widget
+    const widget = document.querySelector('elevenlabs-convai');
+    if (widget) {
+      widget.addEventListener('click', handleVoiceInteraction);
+    }
+
+    return () => {
+      if (widget) {
+        widget.removeEventListener('click', handleVoiceInteraction);
+      }
+    };
+  }, []);
 
   const handleCitizenLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,10 +124,24 @@ const Login = () => {
                 <button type="button" className="text-sm text-accent hover:underline">
                   Forgot PIN?
                 </button>
-                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                <Button type="submit" className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground active:scale-[0.98] transition-all duration-150">
                   Enter My Portal
                 </Button>
               </form>
+
+              {/* Voice AI Assistant Section */}
+              <div className="mt-6 pt-6 border-t border-border">
+                <div className="flex items-center gap-2 mb-3 justify-center">
+                  <Mic className="w-5 h-5 text-primary animate-pulse" />
+                  <span className="text-sm font-medium text-foreground">Need Help? Talk to Our AI Assistant</span>
+                </div>
+                <div className="flex justify-center">
+                  <elevenlabs-convai agent-id="agent_3001kc4yga6xf66bew5chrddazj5"></elevenlabs-convai>
+                </div>
+                <p className="text-xs text-muted-foreground text-center mt-2">
+                  Click to speak with our voice assistant in Swahili or English
+                </p>
+              </div>
             </CardContent>
           </Card>
 
@@ -152,7 +196,7 @@ const Login = () => {
                     />
                   </div>
                 </div>
-                <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
+                <Button type="submit" className="w-full h-12 text-base font-semibold bg-accent hover:bg-accent/90 text-accent-foreground active:scale-[0.98] transition-all duration-150">
                   Access Officer Dashboard
                 </Button>
               </form>

@@ -213,21 +213,21 @@ const CitizenDashboard = () => {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-          <Button variant="outline" className="h-auto py-4 flex flex-col gap-2">
-            <MessageSquare className="w-5 h-5" />
-            <span className="text-xs">Message Officer</span>
+          <Button variant="outline" className="h-auto min-h-[80px] py-4 flex flex-col gap-2 hover:bg-primary/5 hover:border-primary/30 active:scale-[0.98] transition-all duration-150">
+            <MessageSquare className="w-6 h-6" />
+            <span className="text-sm font-medium">Message Officer</span>
           </Button>
-          <Button variant="outline" className="h-auto py-4 flex flex-col gap-2">
-            <FileText className="w-5 h-5" />
-            <span className="text-xs">File a Return</span>
+          <Button variant="outline" className="h-auto min-h-[80px] py-4 flex flex-col gap-2 hover:bg-primary/5 hover:border-primary/30 active:scale-[0.98] transition-all duration-150">
+            <FileText className="w-6 h-6" />
+            <span className="text-sm font-medium">File a Return</span>
           </Button>
-          <Button variant="outline" className="h-auto py-4 flex flex-col gap-2">
-            <CheckCircle2 className="w-5 h-5" />
-            <span className="text-xs">Check Compliance</span>
+          <Button variant="outline" className="h-auto min-h-[80px] py-4 flex flex-col gap-2 hover:bg-primary/5 hover:border-primary/30 active:scale-[0.98] transition-all duration-150">
+            <CheckCircle2 className="w-6 h-6" />
+            <span className="text-sm font-medium">Check Compliance</span>
           </Button>
-          <Button variant="outline" className="h-auto py-4 flex flex-col gap-2">
-            <Download className="w-5 h-5" />
-            <span className="text-xs">Download Summary</span>
+          <Button variant="outline" className="h-auto min-h-[80px] py-4 flex flex-col gap-2 hover:bg-primary/5 hover:border-primary/30 active:scale-[0.98] transition-all duration-150">
+            <Download className="w-6 h-6" />
+            <span className="text-sm font-medium">Download Summary</span>
           </Button>
         </div>
       </main>
