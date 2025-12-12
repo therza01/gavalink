@@ -354,6 +354,45 @@ export type Database = {
         }
         Relationships: []
       }
+      voice_agent_requests: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          officer_id: string | null
+          officer_notes: string | null
+          priority: string | null
+          request_type: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          officer_id?: string | null
+          officer_notes?: string | null
+          priority?: string | null
+          request_type: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          officer_id?: string | null
+          officer_notes?: string | null
+          priority?: string | null
+          request_type?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

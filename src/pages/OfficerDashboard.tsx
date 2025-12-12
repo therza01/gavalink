@@ -24,6 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { supabase } from "@/integrations/supabase/client";
 import gavaLinkLogo from "@/assets/gavalink-logo.png";
 
 interface Case {
@@ -42,17 +43,40 @@ const OfficerDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [voiceRequests, setVoiceRequests] = useState(0);
 
-  // Get voice agent request count from localStorage
+  // Get voice agent request count from database
   useEffect(() => {
-    const updateVoiceRequests = () => {
-      const count = parseInt(localStorage.getItem('voiceAgentRequests') || '0');
-      setVoiceRequests(count);
+    const fetchVoiceRequests = async () => {
+      const { count, error } = await supabase
+        .from('voice_agent_requests')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'pending');
+      
+      if (!error && count !== null) {
+        setVoiceRequests(count);
+      }
     };
 
-    updateVoiceRequests();
-    // Poll for updates every 5 seconds
-    const interval = setInterval(updateVoiceRequests, 5000);
-    return () => clearInterval(interval);
+    fetchVoiceRequests();
+
+    // Subscribe to realtime updates
+    const channel = supabase
+      .channel('voice-requests-count')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'voice_agent_requests'
+        },
+        () => {
+          fetchVoiceRequests();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const cases: Case[] = [
@@ -64,10 +88,10 @@ const OfficerDashboard = () => {
   ];
 
   const stats = [
-    { label: "Total Cases", value: 45, icon: Users, color: "text-accent" },
-    { label: "Voice AI Requests", value: voiceRequests, icon: Mic, color: "text-primary" },
-    { label: "Action Required", value: 8, icon: AlertCircle, color: "text-secondary" },
-    { label: "Resolved Today", value: 5, icon: CheckCircle2, color: "text-success" },
+    { label: "Total Cases", value: 45, icon: Users, color: "text-accent", onClick: undefined },
+    { label: "Voice AI Requests", value: voiceRequests, icon: Mic, color: "text-primary", onClick: () => navigate("/officer/voice-requests") },
+    { label: "Action Required", value: 8, icon: AlertCircle, color: "text-secondary", onClick: undefined },
+    { label: "Resolved Today", value: 5, icon: CheckCircle2, color: "text-success", onClick: undefined },
   ];
 
   const getPriorityColor = (priority: string) => {
@@ -219,7 +243,11 @@ const OfficerDashboard = () => {
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in">
             {stats.map((stat) => (
-              <Card key={stat.label} className="shadow-card">
+              <Card 
+                key={stat.label} 
+                className={`shadow-card ${stat.onClick ? 'cursor-pointer hover:shadow-lg transition-shadow' : ''}`}
+                onClick={stat.onClick}
+              >
                 <CardContent className="pt-4 pb-4">
                   <div className="flex items-center justify-between">
                     <div>
