@@ -3,9 +3,10 @@ import { MapPin } from "lucide-react";
 interface CallHeaderProps {
   isConnected: boolean;
   duration: number;
+  isConnecting?: boolean;
 }
 
-export const CallHeader = ({ isConnected, duration }: CallHeaderProps) => {
+export const CallHeader = ({ isConnected, duration, isConnecting }: CallHeaderProps) => {
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -28,7 +29,7 @@ export const CallHeader = ({ isConnected, duration }: CallHeaderProps) => {
           </div>
           <div>
             <span className="font-semibold text-sm tracking-wide">
-              {isConnected ? "LIVE NA AMUA" : "KUUNGANISHA..."}
+              {isConnected ? "LIVE NA AMUA" : isConnecting ? "KUUNGANISHA..." : "IMEKATIKA"}
             </span>
             {isConnected && (
               <span className="text-primary-foreground/80 text-sm ml-2">
