@@ -63,15 +63,10 @@ const CitizenDashboard = () => {
   const handleQuickAction = (action: string) => {
     switch (action) {
       case "File NIL Return":
-        toast.success("Opening NIL Return form...", {
-          description: "You'll be guided through the filing process",
-        });
-        navigate("/call");
+        navigate("/returns");
         break;
       case "Make Payment":
-        toast.info("Payment Portal", {
-          description: "M-Pesa payment integration coming soon",
-        });
+        navigate("/payments");
         break;
       case "Download TCC":
         toast.success("Downloading TCC Certificate...", {
@@ -79,20 +74,13 @@ const CitizenDashboard = () => {
         });
         break;
       case "Upload Document":
-        toast.info("Document Upload", {
-          description: "Document upload feature coming soon",
-        });
+        navigate("/documents");
         break;
       case "Contact Officer":
-        toast.info("Contacting Officer", {
-          description: "Opening secure messaging...",
-        });
+        navigate("/applications");
         break;
       case "Get Help":
-        toast.info("Help Center", {
-          description: "Redirecting to voice assistant...",
-        });
-        navigate("/call");
+        navigate("/support");
         break;
       default:
         toast.info("Feature coming soon");
@@ -100,9 +88,16 @@ const CitizenDashboard = () => {
   };
 
   const handleNavAction = (section: string) => {
-    toast.info(`${section}`, {
-      description: "This section is coming soon",
-    });
+    const routes: Record<string, string> = {
+      "Returns": "/returns",
+      "Payments": "/payments",
+      "Documents": "/documents",
+      "Applications": "/applications",
+      "Support": "/support",
+    };
+    if (routes[section]) {
+      navigate(routes[section]);
+    }
   };
 
   return (
