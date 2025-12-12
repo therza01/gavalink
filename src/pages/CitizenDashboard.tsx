@@ -12,15 +12,6 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
-// Declare the custom element for TypeScript
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'elevenlabs-convai': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & { 'agent-id': string }, HTMLElement>;
-    }
-  }
-}
-
 const CitizenDashboard = () => {
   const navigate = useNavigate();
   const [complianceScore] = useState(78);
@@ -30,26 +21,6 @@ const CitizenDashboard = () => {
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 60000);
     return () => clearInterval(timer);
-  }, []);
-
-  // Track voice agent requests in localStorage for officer dashboard
-  useEffect(() => {
-    const handleVoiceInteraction = () => {
-      const currentCount = parseInt(localStorage.getItem('voiceAgentRequests') || '0');
-      localStorage.setItem('voiceAgentRequests', String(currentCount + 1));
-      localStorage.setItem('lastVoiceRequest', new Date().toISOString());
-    };
-
-    const widget = document.querySelector('elevenlabs-convai');
-    if (widget) {
-      widget.addEventListener('click', handleVoiceInteraction);
-    }
-
-    return () => {
-      if (widget) {
-        widget.removeEventListener('click', handleVoiceInteraction);
-      }
-    };
   }, []);
 
   const documents = [
@@ -461,11 +432,15 @@ const CitizenDashboard = () => {
               <p className="text-sm text-muted-foreground mb-4">
                 Need help navigating iTax? Our AI assistant can help you file returns, check your status, and answer questions about your tax obligations.
               </p>
-              <div className="flex justify-center p-4 bg-muted/30 rounded-xl">
-                <elevenlabs-convai agent-id="agent_3001kc4yga6xf66bew5chrddazj5"></elevenlabs-convai>
-              </div>
+              <Button 
+                onClick={() => navigate("/call")}
+                className="w-full h-16 bg-primary hover:bg-primary/90 active:scale-[0.98] transition-all text-lg font-semibold gap-3"
+              >
+                <Mic className="w-6 h-6" />
+                Start a Call
+              </Button>
               <p className="text-xs text-muted-foreground text-center mt-3">
-                Click the microphone to start speaking
+                Click to start talking with our AI assistant
               </p>
             </CardContent>
           </Card>
