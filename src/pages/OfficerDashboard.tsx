@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import gavaLinkLogo from "@/assets/gavalink-logo.png";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -85,9 +86,7 @@ const OfficerDashboard = () => {
       <header className="border-b border-border bg-officer-charcoal text-primary-foreground sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-accent-foreground" />
-            </div>
+            <img src={gavaLinkLogo} alt="GavaLink Logo" className="h-10 w-auto bg-white rounded-lg p-1" />
             <div>
               <span className="font-bold">Officer Dashboard</span>
               <p className="text-xs opacity-80">Welcome, Officer Atieno | Nairobi Central</p>
