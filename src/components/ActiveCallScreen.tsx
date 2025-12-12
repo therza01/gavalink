@@ -1,41 +1,95 @@
 import { useState, useEffect, useCallback } from "react";
+import { useConversation } from "@elevenlabs/react";
 import { CallHeader } from "./CallHeader";
 import { ConversationView } from "./ConversationView";
 import { VoiceControls } from "./VoiceControls";
 import { Message } from "./MessageBubble";
+import { toast } from "sonner";
 
 interface ActiveCallScreenProps {
   onEndCall: () => void;
 }
 
-const initialMessages: Message[] = [
-  {
-    id: "1",
-    text: "Karibu! Mimi ni Amua, msaidizi wako wa sauti wa KRA. Ninaweza kukusaidia na ushuru wako. Unahitaji msaada gani leo?",
-    sender: "ai",
-    timestamp: new Date(),
-  },
-];
-
-const aiResponses: Record<string, string> = {
-  nil: "Sawa, nitakusaidia kujaza NIL returns. Kwanza, tafadhali niambie nambari yako ya PIN ya KRA.",
-  balance: "Ninakagua salio lako la ushuru... Tafadhali subiri kidogo.",
-  upload: "Unaweza kutuma picha ya hati yako. Je, ni hati gani unataka kutuma?",
-  help: "Ninaweza kukusaidia na: kujaza NIL returns, kukagua salio, kutuma hati, au kujibu maswali yako kuhusu ushuru. Chagua moja!",
-  default: "Nimekuelewa. Tafadhali endelea kuzungumza, ninakusikia.",
-};
+const ELEVENLABS_AGENT_ID = "agent_3001kc4yga6xf66bew5chrddazj5";
 
 export const ActiveCallScreen = ({ onEndCall }: ActiveCallScreenProps) => {
   const [isConnected, setIsConnected] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(true);
   const [duration, setDuration] = useState(0);
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isRecording, setIsRecording] = useState(false);
-  const [isAISpeaking, setIsAISpeaking] = useState(false);
 
-  // Simulate connection
+  const conversation = useConversation({
+    onConnect: () => {
+      console.log("Connected to ElevenLabs agent");
+      setIsConnected(true);
+      setIsConnecting(false);
+      // Add welcome message
+      setMessages([{
+        id: "welcome",
+        text: "Karibu! Mimi ni Amua, msaidizi wako wa sauti wa KRA. Ninaweza kukusaidia na ushuru wako. Unahitaji msaada gani leo?",
+        sender: "ai",
+        timestamp: new Date(),
+      }]);
+    },
+    onDisconnect: () => {
+      console.log("Disconnected from ElevenLabs agent");
+      setIsConnected(false);
+    },
+    onMessage: (message) => {
+      console.log("Message received:", message);
+      // Handle transcriptions
+      if (message.source === "user") {
+        setMessages(prev => [...prev, {
+          id: Date.now().toString(),
+          text: message.message,
+          sender: "user",
+          timestamp: new Date(),
+        }]);
+      } else if (message.source === "ai") {
+        setMessages(prev => [...prev, {
+          id: Date.now().toString(),
+          text: message.message,
+          sender: "ai",
+          timestamp: new Date(),
+        }]);
+      }
+    },
+    onError: (error) => {
+      console.error("ElevenLabs error:", error);
+      toast.error("Voice connection error. Please try again.");
+      setIsConnecting(false);
+    },
+  });
+
+  // Start conversation on mount
   useEffect(() => {
-    const timer = setTimeout(() => setIsConnected(true), 1500);
-    return () => clearTimeout(timer);
+    const startConversation = async () => {
+      try {
+        // Request microphone permission
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+        
+        // Connect to agent (public agent, no token needed)
+        await conversation.startSession({
+          agentId: ELEVENLABS_AGENT_ID,
+          connectionType: "webrtc",
+        });
+      } catch (error) {
+        console.error("Failed to start conversation:", error);
+        if (error instanceof Error && error.name === "NotAllowedError") {
+          toast.error("Microphone access is required for voice calls");
+        } else {
+          toast.error("Failed to connect. Please try again.");
+        }
+        setIsConnecting(false);
+      }
+    };
+
+    startConversation();
+
+    return () => {
+      conversation.endSession();
+    };
   }, []);
 
   // Call duration timer
@@ -47,57 +101,60 @@ export const ActiveCallScreen = ({ onEndCall }: ActiveCallScreenProps) => {
     return () => clearInterval(interval);
   }, [isConnected]);
 
-  const addMessage = useCallback((text: string, sender: "ai" | "user") => {
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      text,
-      sender,
-      timestamp: new Date(),
-    };
-    setMessages((prev) => [...prev, newMessage]);
-  }, []);
-
-  const simulateAIResponse = useCallback((responseKey: string) => {
-    setIsAISpeaking(true);
-    setTimeout(() => {
-      addMessage(aiResponses[responseKey] || aiResponses.default, "ai");
-      setIsAISpeaking(false);
-    }, 2000);
-  }, [addMessage]);
-
   const handleToggleRecording = useCallback(() => {
-    if (isRecording) {
-      // Simulate user message when stopping recording
-      setIsRecording(false);
-      addMessage("Nataka kujaza NIL returns zangu", "user");
-      simulateAIResponse("nil");
-    } else {
-      setIsRecording(true);
+    // With ElevenLabs, the agent is always listening when connected
+    // This button can be used to mute/unmute or provide visual feedback
+    setIsRecording(!isRecording);
+    if (!isRecording) {
+      toast.info("Listening... Speak now");
     }
-  }, [isRecording, addMessage, simulateAIResponse]);
+  }, [isRecording]);
 
   const handleQuickAction = useCallback((action: string) => {
-    const actionLabels: Record<string, string> = {
-      nil: "Nataka kujaza NIL returns",
-      balance: "Nataka kukagua salio langu",
-      upload: "Nataka kutuma hati",
-      help: "Nahitaji msaada",
+    const actionMessages: Record<string, string> = {
+      nil: "Nataka kujaza NIL returns zangu",
+      balance: "Nataka kukagua salio langu la ushuru",
+      upload: "Nataka kutuma hati zangu",
+      help: "Nahitaji msaada wa jumla",
     };
-    addMessage(actionLabels[action] || action, "user");
-    simulateAIResponse(action);
-  }, [addMessage, simulateAIResponse]);
+    
+    // Send as user message for display
+    const userMessage = actionMessages[action] || action;
+    setMessages(prev => [...prev, {
+      id: Date.now().toString(),
+      text: userMessage,
+      sender: "user",
+      timestamp: new Date(),
+    }]);
+    
+    // With ElevenLabs conversational AI, quick actions trigger voice
+    // The agent will respond based on the conversation context
+    toast.info("Quick action sent");
+  }, []);
+
+  const handleEndCall = useCallback(async () => {
+    await conversation.endSession();
+    onEndCall();
+  }, [conversation, onEndCall]);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <CallHeader isConnected={isConnected} duration={duration} />
+      <CallHeader 
+        isConnected={isConnected} 
+        duration={duration} 
+        isConnecting={isConnecting}
+      />
       
-      <ConversationView messages={messages} isAISpeaking={isAISpeaking} />
+      <ConversationView 
+        messages={messages} 
+        isAISpeaking={conversation.isSpeaking} 
+      />
       
       <VoiceControls
         isRecording={isRecording}
-        isSpeaking={isAISpeaking}
+        isSpeaking={conversation.isSpeaking}
         onToggleRecording={handleToggleRecording}
-        onEndCall={onEndCall}
+        onEndCall={handleEndCall}
         onQuickAction={handleQuickAction}
       />
     </div>
