@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Phone, Shield, Clock, Globe } from "lucide-react";
+import gavaLinkLogo from "@/assets/gavalink-logo.png";
 
 interface WelcomeScreenProps {
   onStartCall: () => void;
@@ -21,13 +22,9 @@ export const WelcomeScreen = ({ onStartCall }: WelcomeScreenProps) => {
       </div>
 
       <div className="glass-card rounded-3xl p-8 text-center text-primary-foreground max-w-md w-full animate-scale-in relative z-10">
-        {/* Logo/Icon */}
-        <div className="relative mx-auto mb-6 w-28 h-28">
-          <div className="absolute inset-0 bg-white/20 rounded-full animate-pulse" />
-          <div className="absolute inset-2 bg-white/10 rounded-full backdrop-blur-sm flex items-center justify-center">
-            <Phone className="w-12 h-12" />
-          </div>
-          <div className="absolute inset-0 rounded-full border-2 border-white/30 animate-float" />
+        {/* Logo */}
+        <div className="mx-auto mb-6 w-28 h-28 bg-white/20 rounded-2xl backdrop-blur-sm flex items-center justify-center p-2">
+          <img src={gavaLinkLogo} alt="GavaLink Logo" className="w-full h-full object-contain" />
         </div>
 
         {/* Title */}

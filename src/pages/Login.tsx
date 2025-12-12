@@ -4,7 +4,7 @@ import { User, Building2, Shield, Lock, Mail, Phone, KeyRound } from "lucide-rea
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-
+import gavaLinkLogo from "@/assets/gavalink-logo.png";
 const Login = () => {
   const navigate = useNavigate();
   const [citizenForm, setCitizenForm] = useState({ phone: "", password: "" });
@@ -26,13 +26,7 @@ const Login = () => {
       <header className="border-b border-border bg-card/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-              <Shield className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-foreground">GavaLink</h1>
-              <p className="text-xs text-muted-foreground">Government Services Portal</p>
-            </div>
+            <img src={gavaLinkLogo} alt="GavaLink Logo" className="h-12 w-auto" />
           </div>
           <div className="trust-badge">
             <Lock className="w-3.5 h-3.5" />

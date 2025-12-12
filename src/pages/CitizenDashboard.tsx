@@ -12,6 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import gavaLinkLogo from "@/assets/gavalink-logo.png";
 
 const CitizenDashboard = () => {
   const navigate = useNavigate();
@@ -127,13 +128,7 @@ const CitizenDashboard = () => {
           {/* Main header */}
           <div className="flex items-center justify-between py-3">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center shadow-md">
-                <Shield className="w-7 h-7 text-primary" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold tracking-tight">KRA iTax</h1>
-                <p className="text-xs text-white/70">Kenya Revenue Authority</p>
-              </div>
+              <img src={gavaLinkLogo} alt="GavaLink Logo" className="h-12 w-auto bg-white rounded-lg p-1" />
             </div>
             
             <div className="flex items-center gap-2">
