@@ -4,8 +4,15 @@ import { toast } from "sonner";
 import { 
   Building2, Shield, Search, Filter, Bell, LogOut, 
   User, ChevronRight, CheckCircle2, AlertCircle, Clock,
-  FileCheck, Send, BarChart3, Users, X, MessageSquare, Mic
+  FileCheck, Send, BarChart3, Users, X, MessageSquare, Mic, Menu
 } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -94,6 +101,57 @@ const OfficerDashboard = () => {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            {/* Mobile System Tools Drawer */}
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="lg:hidden text-primary-foreground hover:bg-accent/20 active:scale-[0.98] transition-all duration-150"
+                >
+                  <Menu className="w-5 h-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-72">
+                <SheetHeader>
+                  <SheetTitle>System Tools</SheetTitle>
+                </SheetHeader>
+                <div className="mt-6 space-y-2">
+                  <Button 
+                    variant="ghost" 
+                    className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
+                    onClick={() => toast.success("Bulk PIN Verifier", { description: "Opening PIN verification tool..." })}
+                  >
+                    <Users className="w-4 h-4" />
+                    Bulk PIN Verifier
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
+                    onClick={() => toast.success("Document Stamp", { description: "Opening document stamping tool..." })}
+                  >
+                    <FileCheck className="w-4 h-4" />
+                    Document Stamp
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
+                    onClick={() => toast.success("Broadcast Update", { description: "Opening broadcast message composer..." })}
+                  >
+                    <Send className="w-4 h-4" />
+                    Broadcast Update
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
+                    onClick={() => toast.success("Analytics", { description: "Loading analytics dashboard..." })}
+                  >
+                    <BarChart3 className="w-4 h-4" />
+                    Analytics
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
             <Button 
               variant="ghost" 
               size="icon" 
@@ -119,7 +177,7 @@ const OfficerDashboard = () => {
       </header>
 
       <div className="flex">
-        {/* Sidebar */}
+        {/* Sidebar - Desktop only */}
         <aside className="hidden lg:block w-64 border-r border-border bg-card min-h-[calc(100vh-57px)] p-4 space-y-2">
           <p className="text-xs font-semibold text-muted-foreground uppercase px-3 mb-3">System Tools</p>
           <Button 
