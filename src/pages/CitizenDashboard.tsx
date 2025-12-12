@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { 
   User, Shield, FileText, Clock, MessageSquare, Download, 
   CheckCircle2, AlertCircle, ChevronRight, Bell, LogOut,
@@ -57,6 +58,52 @@ const CitizenDashboard = () => {
     return "text-red-600";
   };
 
+  // Quick action handlers
+  const handleQuickAction = (action: string) => {
+    switch (action) {
+      case "File NIL Return":
+        toast.success("Opening NIL Return form...", {
+          description: "You'll be guided through the filing process",
+        });
+        navigate("/call");
+        break;
+      case "Make Payment":
+        toast.info("Payment Portal", {
+          description: "M-Pesa payment integration coming soon",
+        });
+        break;
+      case "Download TCC":
+        toast.success("Downloading TCC Certificate...", {
+          description: "Your Tax Compliance Certificate will download shortly",
+        });
+        break;
+      case "Upload Document":
+        toast.info("Document Upload", {
+          description: "Document upload feature coming soon",
+        });
+        break;
+      case "Contact Officer":
+        toast.info("Contacting Officer", {
+          description: "Opening secure messaging...",
+        });
+        break;
+      case "Get Help":
+        toast.info("Help Center", {
+          description: "Redirecting to voice assistant...",
+        });
+        navigate("/call");
+        break;
+      default:
+        toast.info("Feature coming soon");
+    }
+  };
+
+  const handleNavAction = (section: string) => {
+    toast.info(`${section}`, {
+      description: "This section is coming soon",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Professional Header */}
@@ -90,14 +137,14 @@ const CitizenDashboard = () => {
             </div>
             
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative" onClick={() => toast.info("Search", { description: "Search feature coming soon" })}>
                 <Search className="w-5 h-5" />
               </Button>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative" onClick={() => toast.info("Notifications", { description: "You have 3 unread notifications" })}>
                 <Bell className="w-5 h-5" />
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-secondary text-secondary-foreground text-xs rounded-full flex items-center justify-center font-bold">3</span>
               </Button>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => toast.info("Settings", { description: "Settings page coming soon" })}>
                 <Settings className="w-5 h-5" />
               </Button>
               <Separator orientation="vertical" className="h-6 bg-white/20 mx-2" />
@@ -120,11 +167,11 @@ const CitizenDashboard = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center gap-1 py-2 overflow-x-auto">
             <Button variant="ghost" size="sm" className="text-sm font-medium text-primary bg-primary/5">Dashboard</Button>
-            <Button variant="ghost" size="sm" className="text-sm text-muted-foreground hover:text-primary">Returns</Button>
-            <Button variant="ghost" size="sm" className="text-sm text-muted-foreground hover:text-primary">Payments</Button>
-            <Button variant="ghost" size="sm" className="text-sm text-muted-foreground hover:text-primary">Documents</Button>
-            <Button variant="ghost" size="sm" className="text-sm text-muted-foreground hover:text-primary">Applications</Button>
-            <Button variant="ghost" size="sm" className="text-sm text-muted-foreground hover:text-primary">Support</Button>
+            <Button variant="ghost" size="sm" className="text-sm text-muted-foreground hover:text-primary" onClick={() => handleNavAction("Returns")}>Returns</Button>
+            <Button variant="ghost" size="sm" className="text-sm text-muted-foreground hover:text-primary" onClick={() => handleNavAction("Payments")}>Payments</Button>
+            <Button variant="ghost" size="sm" className="text-sm text-muted-foreground hover:text-primary" onClick={() => handleNavAction("Documents")}>Documents</Button>
+            <Button variant="ghost" size="sm" className="text-sm text-muted-foreground hover:text-primary" onClick={() => handleNavAction("Applications")}>Applications</Button>
+            <Button variant="ghost" size="sm" className="text-sm text-muted-foreground hover:text-primary" onClick={() => handleNavAction("Support")}>Support</Button>
           </div>
         </div>
       </nav>
@@ -248,6 +295,7 @@ const CitizenDashboard = () => {
                   key={action.label}
                   variant="outline" 
                   className="h-auto min-h-[90px] py-4 flex flex-col gap-2 hover:border-primary hover:bg-primary/5 active:scale-[0.98] transition-all duration-150 group"
+                  onClick={() => handleQuickAction(action.label)}
                 >
                   <action.icon className={`w-7 h-7 ${action.color} group-hover:scale-110 transition-transform`} />
                   <span className="text-xs font-medium text-center leading-tight">{action.label}</span>
@@ -266,7 +314,7 @@ const CitizenDashboard = () => {
                 <TrendingUp className="w-5 h-5 text-primary" />
                 Tax Overview
               </CardTitle>
-              <Button variant="ghost" size="sm" className="text-primary text-xs">View All</Button>
+              <Button variant="ghost" size="sm" className="text-primary text-xs" onClick={() => handleNavAction("Tax Overview")}>View All</Button>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="p-4 bg-gradient-to-br from-green-500/10 to-green-500/5 rounded-xl border border-green-500/20">
@@ -294,7 +342,10 @@ const CitizenDashboard = () => {
                 </div>
               </div>
 
-              <Button className="w-full bg-primary hover:bg-primary/90 active:scale-[0.98] transition-all">
+              <Button 
+                className="w-full bg-primary hover:bg-primary/90 active:scale-[0.98] transition-all"
+                onClick={() => handleQuickAction("File NIL Return")}
+              >
                 <FileText className="w-4 h-4 mr-2" />
                 File Return Now
               </Button>
@@ -308,13 +359,14 @@ const CitizenDashboard = () => {
                 <Folder className="w-5 h-5 text-blue-600" />
                 Documents Hub
               </CardTitle>
-              <Button variant="ghost" size="sm" className="text-primary text-xs">Manage</Button>
+              <Button variant="ghost" size="sm" className="text-primary text-xs" onClick={() => handleNavAction("Documents")}>Manage</Button>
             </CardHeader>
             <CardContent className="space-y-3">
               {documents.map((doc) => (
                 <div
                   key={doc.name}
                   className="flex items-center justify-between p-3 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors cursor-pointer group"
+                  onClick={() => toast.info(doc.name, { description: `${doc.count} files available` })}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-background flex items-center justify-center shadow-sm">
@@ -329,7 +381,11 @@ const CitizenDashboard = () => {
                 </div>
               ))}
               
-              <Button variant="outline" className="w-full mt-4 active:scale-[0.98] transition-all">
+              <Button 
+                variant="outline" 
+                className="w-full mt-4 active:scale-[0.98] transition-all"
+                onClick={() => handleQuickAction("Upload Document")}
+              >
                 <Upload className="w-4 h-4 mr-2" />
                 Upload New Document
               </Button>
@@ -350,6 +406,7 @@ const CitizenDashboard = () => {
                 <div
                   key={app.id}
                   className="p-3 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors cursor-pointer"
+                  onClick={() => toast.info(app.name, { description: `Application ${app.id} - Assigned to ${app.officer}` })}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-medium text-foreground">{app.name}</p>
@@ -391,8 +448,8 @@ const CitizenDashboard = () => {
                     </div>
                     <p className="text-sm text-muted-foreground mt-1">Kindly upload your supporting document for PIN rectification application.</p>
                     <div className="flex gap-2 mt-3">
-                      <Button size="sm" className="h-8 bg-secondary hover:bg-secondary/90">Reply</Button>
-                      <Button size="sm" variant="outline" className="h-8">View Details</Button>
+                      <Button size="sm" className="h-8 bg-secondary hover:bg-secondary/90" onClick={() => toast.info("Compose Reply", { description: "Opening secure messaging..." })}>Reply</Button>
+                      <Button size="sm" variant="outline" className="h-8" onClick={() => toast.info("Message Details", { description: "Viewing conversation with Officer Atieno" })}>View Details</Button>
                     </div>
                   </div>
                 </div>
@@ -489,19 +546,19 @@ const CitizenDashboard = () => {
             <div>
               <h5 className="font-semibold mb-3">Quick Links</h5>
               <ul className="space-y-2 text-sm text-white/70">
-                <li className="hover:text-white cursor-pointer">File Returns</li>
-                <li className="hover:text-white cursor-pointer">Make Payment</li>
-                <li className="hover:text-white cursor-pointer">Download TCC</li>
-                <li className="hover:text-white cursor-pointer">My Documents</li>
+                <li className="hover:text-white cursor-pointer" onClick={() => handleQuickAction("File NIL Return")}>File Returns</li>
+                <li className="hover:text-white cursor-pointer" onClick={() => handleQuickAction("Make Payment")}>Make Payment</li>
+                <li className="hover:text-white cursor-pointer" onClick={() => handleQuickAction("Download TCC")}>Download TCC</li>
+                <li className="hover:text-white cursor-pointer" onClick={() => handleNavAction("Documents")}>My Documents</li>
               </ul>
             </div>
             <div>
               <h5 className="font-semibold mb-3">Support</h5>
               <ul className="space-y-2 text-sm text-white/70">
-                <li className="hover:text-white cursor-pointer">FAQs</li>
-                <li className="hover:text-white cursor-pointer">Contact Us</li>
-                <li className="hover:text-white cursor-pointer">Service Centers</li>
-                <li className="hover:text-white cursor-pointer">Complaints</li>
+                <li className="hover:text-white cursor-pointer" onClick={() => toast.info("FAQs", { description: "Frequently asked questions coming soon" })}>FAQs</li>
+                <li className="hover:text-white cursor-pointer" onClick={() => toast.info("Contact Us", { description: "Call +254 20 281 7700 or email callcentre@kra.go.ke" })}>Contact Us</li>
+                <li className="hover:text-white cursor-pointer" onClick={() => toast.info("Service Centers", { description: "Find KRA service centers near you" })}>Service Centers</li>
+                <li className="hover:text-white cursor-pointer" onClick={() => toast.info("Complaints", { description: "Submit a complaint or feedback" })}>Complaints</li>
               </ul>
             </div>
             <div>
@@ -517,9 +574,9 @@ const CitizenDashboard = () => {
           <div className="flex flex-col md:flex-row items-center justify-between text-xs text-white/60">
             <p>© 2024 Kenya Revenue Authority. All rights reserved.</p>
             <div className="flex items-center gap-4 mt-2 md:mt-0">
-              <span className="hover:text-white cursor-pointer">Privacy Policy</span>
-              <span className="hover:text-white cursor-pointer">Terms of Service</span>
-              <span className="hover:text-white cursor-pointer">Accessibility</span>
+              <span className="hover:text-white cursor-pointer" onClick={() => toast.info("Privacy Policy")}>Privacy Policy</span>
+              <span className="hover:text-white cursor-pointer" onClick={() => toast.info("Terms of Service")}>Terms of Service</span>
+              <span className="hover:text-white cursor-pointer" onClick={() => toast.info("Accessibility")}>Accessibility</span>
             </div>
           </div>
         </div>
