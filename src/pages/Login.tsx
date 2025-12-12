@@ -22,22 +22,18 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-background kitenge-pattern">
-      {/* Header */}
-      <header className="border-b border-border bg-card/80 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src={gavaLinkLogo} alt="GavaLink Logo" className="h-12 w-auto" />
-          </div>
-          <div className="trust-badge">
-            <Lock className="w-3.5 h-3.5" />
-            <span>Secured</span>
-          </div>
+      {/* Centered Logo at Top */}
+      <div className="flex flex-col items-center pt-8 pb-4">
+        <img src={gavaLinkLogo} alt="GavaLink Logo" className="h-24 w-auto animate-fade-in" />
+        <div className="trust-badge mt-4">
+          <Lock className="w-3.5 h-3.5" />
+          <span>Secured</span>
         </div>
-      </header>
+      </div>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">
-        <div className="text-center mb-12 animate-fade-in">
+      <main className="container mx-auto px-4 py-8">
+        <div className="text-center mb-10 animate-fade-in">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
             Your Secure Link to Government Services
           </h2>
