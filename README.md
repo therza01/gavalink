@@ -163,10 +163,10 @@ VITE_SUPABASE_PROJECT_ID=<project-id>
 
 ```bash
 # Clone the repository
-git clone <YOUR_GIT_URL>
+git clone https://github.com/therza01/gavalink.git
 
 # Navigate to project directory
-cd <YOUR_PROJECT_NAME>
+cd gavalink
 
 # Install dependencies
 npm install
