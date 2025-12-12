@@ -19,6 +19,7 @@ import BulkPINVerifier from "./pages/BulkPINVerifier";
 import DocumentStamp from "./pages/DocumentStamp";
 import BroadcastUpdate from "./pages/BroadcastUpdate";
 import Analytics from "./pages/Analytics";
+import VoiceAIRequests from "./pages/VoiceAIRequests";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +47,7 @@ const App = () => (
             <Route path="/officer/document-stamp" element={<DocumentStamp />} />
             <Route path="/officer/broadcast" element={<BroadcastUpdate />} />
             <Route path="/officer/analytics" element={<Analytics />} />
+            <Route path="/officer/voice-requests" element={<VoiceAIRequests />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
