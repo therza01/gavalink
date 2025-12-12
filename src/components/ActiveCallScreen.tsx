@@ -150,25 +150,35 @@ export const ActiveCallScreen = ({
   }, [conversation, onEndCall]);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <CallHeader 
-        isConnected={isConnected} 
-        duration={duration} 
-        isConnecting={isConnecting}
-      />
+    <div className="min-h-screen bg-gradient-to-b from-primary to-primary/90 flex flex-col">
+      {/* Phone Call Header */}
+      <div className="flex-shrink-0 pt-12 pb-6 text-center text-primary-foreground">
+        <div className="mx-auto w-20 h-20 rounded-full bg-card/20 backdrop-blur flex items-center justify-center mb-4 border-2 border-primary-foreground/30">
+          <span className="text-3xl">📞</span>
+        </div>
+        <h2 className="text-xl font-semibold">Amua - KRA Assistant</h2>
+        <CallHeader 
+          isConnected={isConnected} 
+          duration={duration} 
+          isConnecting={isConnecting}
+        />
+      </div>
       
-      <ConversationView 
-        messages={messages} 
-        isAISpeaking={conversation.isSpeaking} 
-      />
-      
-      <VoiceControls
-        isRecording={isRecording}
-        isSpeaking={conversation.isSpeaking}
-        onToggleRecording={handleToggleRecording}
-        onEndCall={handleEndCall}
-        onQuickAction={handleQuickAction}
-      />
+      {/* Conversation Area */}
+      <div className="flex-1 bg-card rounded-t-3xl overflow-hidden flex flex-col shadow-2xl">
+        <ConversationView 
+          messages={messages} 
+          isAISpeaking={conversation.isSpeaking} 
+        />
+        
+        <VoiceControls
+          isRecording={isRecording}
+          isSpeaking={conversation.isSpeaking}
+          onToggleRecording={handleToggleRecording}
+          onEndCall={handleEndCall}
+          onQuickAction={handleQuickAction}
+        />
+      </div>
     </div>
   );
 };
