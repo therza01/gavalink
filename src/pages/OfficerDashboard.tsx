@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Building2, Shield, Search, Filter, Bell, LogOut, 
   User, ChevronRight, CheckCircle2, AlertCircle, Clock,
-  FileCheck, Send, BarChart3, Users, X, MessageSquare
+  FileCheck, Send, BarChart3, Users, X, MessageSquare, Mic
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,6 +31,20 @@ const OfficerDashboard = () => {
   const navigate = useNavigate();
   const [selectedCase, setSelectedCase] = useState<Case | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [voiceRequests, setVoiceRequests] = useState(0);
+
+  // Get voice agent request count from localStorage
+  useEffect(() => {
+    const updateVoiceRequests = () => {
+      const count = parseInt(localStorage.getItem('voiceAgentRequests') || '0');
+      setVoiceRequests(count);
+    };
+
+    updateVoiceRequests();
+    // Poll for updates every 5 seconds
+    const interval = setInterval(updateVoiceRequests, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const cases: Case[] = [
     { id: "CAS-001", name: "Juma Ochieng", pin: "A001234567X", category: "PIN Rectification", priority: "high", days: 5, status: "action" },
@@ -42,7 +56,7 @@ const OfficerDashboard = () => {
 
   const stats = [
     { label: "Total Cases", value: 45, icon: Users, color: "text-accent" },
-    { label: "Pending", value: 12, icon: Clock, color: "text-warning" },
+    { label: "Voice AI Requests", value: voiceRequests, icon: Mic, color: "text-primary" },
     { label: "Action Required", value: 8, icon: AlertCircle, color: "text-secondary" },
     { label: "Resolved Today", value: 5, icon: CheckCircle2, color: "text-success" },
   ];
@@ -265,19 +279,19 @@ const OfficerDashboard = () => {
 
             {/* Action Buttons */}
             <div className="space-y-2">
-              <Button className="w-full bg-primary hover:bg-primary/90">
+              <Button className="w-full h-11 font-semibold bg-primary hover:bg-primary/90 active:scale-[0.98] transition-all duration-150">
                 <CheckCircle2 className="w-4 h-4 mr-2" />
                 Approve
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full h-11 font-semibold active:scale-[0.98] transition-all duration-150">
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Request Info
               </Button>
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="outline" className="text-warning border-warning hover:bg-warning/10">
+                <Button variant="outline" className="h-10 font-medium text-warning border-warning hover:bg-warning/10 active:scale-[0.98] transition-all duration-150">
                   Escalate
                 </Button>
-                <Button variant="outline" className="text-muted-foreground">
+                <Button variant="outline" className="h-10 font-medium text-muted-foreground active:scale-[0.98] transition-all duration-150">
                   Close Case
                 </Button>
               </div>
