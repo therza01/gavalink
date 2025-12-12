@@ -58,13 +58,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        kenya: {
-          green: "hsl(var(--kenya-green))",
-          red: "hsl(var(--kenya-red))",
-          black: "hsl(var(--kenya-black))",
-        },
-        gava: {
-          blue: "hsl(var(--gava-blue))",
+        kra: {
+          black: "hsl(var(--kra-black))",
+          red: "hsl(var(--kra-red))",
+          white: "hsl(var(--kra-white))",
+          gray: "hsl(var(--kra-gray))",
         },
         officer: {
           charcoal: "hsl(var(--officer-charcoal))",
