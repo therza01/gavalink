@@ -120,7 +120,7 @@ const OfficerDashboard = () => {
                   <Button 
                     variant="ghost" 
                     className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
-                    onClick={() => toast.success("Bulk PIN Verifier", { description: "Opening PIN verification tool..." })}
+                    onClick={() => navigate("/officer/bulk-pin")}
                   >
                     <Users className="w-4 h-4" />
                     Bulk PIN Verifier
@@ -128,7 +128,7 @@ const OfficerDashboard = () => {
                   <Button 
                     variant="ghost" 
                     className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
-                    onClick={() => toast.success("Document Stamp", { description: "Opening document stamping tool..." })}
+                    onClick={() => navigate("/officer/document-stamp")}
                   >
                     <FileCheck className="w-4 h-4" />
                     Document Stamp
@@ -136,7 +136,7 @@ const OfficerDashboard = () => {
                   <Button 
                     variant="ghost" 
                     className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
-                    onClick={() => toast.success("Broadcast Update", { description: "Opening broadcast message composer..." })}
+                    onClick={() => navigate("/officer/broadcast")}
                   >
                     <Send className="w-4 h-4" />
                     Broadcast Update
@@ -144,7 +144,7 @@ const OfficerDashboard = () => {
                   <Button 
                     variant="ghost" 
                     className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
-                    onClick={() => toast.success("Analytics", { description: "Loading analytics dashboard..." })}
+                    onClick={() => navigate("/officer/analytics")}
                   >
                     <BarChart3 className="w-4 h-4" />
                     Analytics
@@ -183,7 +183,7 @@ const OfficerDashboard = () => {
           <Button 
             variant="ghost" 
             className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
-            onClick={() => toast.success("Bulk PIN Verifier", { description: "Opening PIN verification tool..." })}
+            onClick={() => navigate("/officer/bulk-pin")}
           >
             <Users className="w-4 h-4" />
             Bulk PIN Verifier
@@ -191,7 +191,7 @@ const OfficerDashboard = () => {
           <Button 
             variant="ghost" 
             className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
-            onClick={() => toast.success("Document Stamp", { description: "Opening document stamping tool..." })}
+            onClick={() => navigate("/officer/document-stamp")}
           >
             <FileCheck className="w-4 h-4" />
             Document Stamp
@@ -199,7 +199,7 @@ const OfficerDashboard = () => {
           <Button 
             variant="ghost" 
             className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
-            onClick={() => toast.success("Broadcast Update", { description: "Opening broadcast message composer..." })}
+            onClick={() => navigate("/officer/broadcast")}
           >
             <Send className="w-4 h-4" />
             Broadcast Update
@@ -207,7 +207,7 @@ const OfficerDashboard = () => {
           <Button 
             variant="ghost" 
             className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
-            onClick={() => toast.success("Analytics", { description: "Loading analytics dashboard..." })}
+            onClick={() => navigate("/officer/analytics")}
           >
             <BarChart3 className="w-4 h-4" />
             Analytics
