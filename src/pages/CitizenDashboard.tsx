@@ -1,17 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   User, Shield, FileText, Clock, MessageSquare, Download, 
   CheckCircle2, AlertCircle, ChevronRight, Bell, LogOut,
-  TrendingUp, Calendar, Folder
+  TrendingUp, Calendar, Folder, Mic
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
+// Declare the custom element for TypeScript
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'elevenlabs-convai': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & { 'agent-id': string }, HTMLElement>;
+    }
+  }
+}
+
 const CitizenDashboard = () => {
   const navigate = useNavigate();
   const [complianceScore] = useState(78);
+
+  // Track voice agent requests in localStorage for officer dashboard
+  useEffect(() => {
+    const handleVoiceInteraction = () => {
+      const currentCount = parseInt(localStorage.getItem('voiceAgentRequests') || '0');
+      localStorage.setItem('voiceAgentRequests', String(currentCount + 1));
+      localStorage.setItem('lastVoiceRequest', new Date().toISOString());
+    };
+
+    // Listen for any interaction with the voice widget
+    const widget = document.querySelector('elevenlabs-convai');
+    if (widget) {
+      widget.addEventListener('click', handleVoiceInteraction);
+    }
+
+    return () => {
+      if (widget) {
+        widget.removeEventListener('click', handleVoiceInteraction);
+      }
+    };
+  }, []);
 
   const documents = [
     { name: "iTax Forms", icon: FileText, count: 3 },
@@ -230,6 +260,26 @@ const CitizenDashboard = () => {
             <span className="text-sm font-medium">Download Summary</span>
           </Button>
         </div>
+
+        {/* Voice AI Assistant */}
+        <Card className="animate-fade-in bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20" style={{ animationDelay: "0.35s" }}>
+          <CardContent className="pt-6 pb-6">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+                  <Mic className="w-7 h-7 text-primary animate-pulse" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-foreground">Voice AI Assistant</h3>
+                  <p className="text-sm text-muted-foreground">Need help? Talk to our AI in Swahili or English</p>
+                </div>
+              </div>
+              <div className="flex justify-center">
+                <elevenlabs-convai agent-id="agent_3001kc4yga6xf66bew5chrddazj5"></elevenlabs-convai>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </main>
 
       {/* Footer */}
