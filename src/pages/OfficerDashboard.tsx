@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { 
   Building2, Shield, Search, Filter, Bell, LogOut, 
   User, ChevronRight, CheckCircle2, AlertCircle, Clock,
@@ -7,7 +8,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import gavaLinkLogo from "@/assets/gavalink-logo.png";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import gavaLinkLogo from "@/assets/gavalink-logo.png";
 
 interface Case {
   id: string;
@@ -93,11 +94,24 @@ const OfficerDashboard = () => {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" className="text-primary-foreground hover:bg-accent/20 relative">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-primary-foreground hover:bg-accent/20 relative active:scale-[0.98] transition-all duration-150"
+              onClick={() => toast.info("Notifications", { description: "You have 3 new notifications" })}
+            >
               <Bell className="w-5 h-5" />
               <span className="absolute -top-1 -right-1 w-4 h-4 bg-secondary text-secondary-foreground text-xs rounded-full flex items-center justify-center">3</span>
             </Button>
-            <Button variant="ghost" size="icon" className="text-primary-foreground hover:bg-accent/20" onClick={() => navigate("/")}>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-primary-foreground hover:bg-accent/20 active:scale-[0.98] transition-all duration-150" 
+              onClick={() => {
+                toast.success("Signing out...");
+                navigate("/");
+              }}
+            >
               <LogOut className="w-5 h-5" />
             </Button>
           </div>
@@ -108,22 +122,38 @@ const OfficerDashboard = () => {
         {/* Sidebar */}
         <aside className="hidden lg:block w-64 border-r border-border bg-card min-h-[calc(100vh-57px)] p-4 space-y-2">
           <p className="text-xs font-semibold text-muted-foreground uppercase px-3 mb-3">System Tools</p>
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted text-left text-sm text-foreground">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
+            onClick={() => toast.success("Bulk PIN Verifier", { description: "Opening PIN verification tool..." })}
+          >
             <Users className="w-4 h-4" />
             Bulk PIN Verifier
-          </button>
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted text-left text-sm text-foreground">
+          </Button>
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
+            onClick={() => toast.success("Document Stamp", { description: "Opening document stamping tool..." })}
+          >
             <FileCheck className="w-4 h-4" />
             Document Stamp
-          </button>
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted text-left text-sm text-foreground">
+          </Button>
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
+            onClick={() => toast.success("Broadcast Update", { description: "Opening broadcast message composer..." })}
+          >
             <Send className="w-4 h-4" />
             Broadcast Update
-          </button>
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted text-left text-sm text-foreground">
+          </Button>
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start gap-3 px-3 py-2 h-auto text-sm text-foreground hover:bg-muted active:scale-[0.98] transition-all duration-150"
+            onClick={() => toast.success("Analytics", { description: "Loading analytics dashboard..." })}
+          >
             <BarChart3 className="w-4 h-4" />
             Analytics
-          </button>
+          </Button>
         </aside>
 
         {/* Main Content */}
@@ -160,7 +190,12 @@ const OfficerDashboard = () => {
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
                   </div>
-                  <Button variant="outline" size="icon">
+                  <Button 
+                    variant="outline" 
+                    size="icon"
+                    className="active:scale-[0.98] transition-all duration-150"
+                    onClick={() => toast.info("Filter", { description: "Filter options coming soon" })}
+                  >
                     <Filter className="w-4 h-4" />
                   </Button>
                 </div>
@@ -278,19 +313,40 @@ const OfficerDashboard = () => {
 
             {/* Action Buttons */}
             <div className="space-y-2">
-              <Button className="w-full h-11 font-semibold bg-primary hover:bg-primary/90 active:scale-[0.98] transition-all duration-150">
+              <Button 
+                className="w-full h-11 font-semibold bg-primary hover:bg-primary/90 active:scale-[0.98] transition-all duration-150"
+                onClick={() => {
+                  toast.success("Case Approved", { description: `Case ${selectedCase.id} has been approved successfully` });
+                  setSelectedCase(null);
+                }}
+              >
                 <CheckCircle2 className="w-4 h-4 mr-2" />
                 Approve
               </Button>
-              <Button variant="outline" className="w-full h-11 font-semibold active:scale-[0.98] transition-all duration-150">
+              <Button 
+                variant="outline" 
+                className="w-full h-11 font-semibold active:scale-[0.98] transition-all duration-150"
+                onClick={() => toast.info("Request Sent", { description: `Information request sent to ${selectedCase.name}` })}
+              >
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Request Info
               </Button>
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="outline" className="h-10 font-medium text-warning border-warning hover:bg-warning/10 active:scale-[0.98] transition-all duration-150">
+                <Button 
+                  variant="outline" 
+                  className="h-10 font-medium text-warning border-warning hover:bg-warning/10 active:scale-[0.98] transition-all duration-150"
+                  onClick={() => toast.warning("Case Escalated", { description: `Case ${selectedCase.id} has been escalated to supervisor` })}
+                >
                   Escalate
                 </Button>
-                <Button variant="outline" className="h-10 font-medium text-muted-foreground active:scale-[0.98] transition-all duration-150">
+                <Button 
+                  variant="outline" 
+                  className="h-10 font-medium text-muted-foreground active:scale-[0.98] transition-all duration-150"
+                  onClick={() => {
+                    toast.success("Case Closed", { description: `Case ${selectedCase.id} has been closed` });
+                    setSelectedCase(null);
+                  }}
+                >
                   Close Case
                 </Button>
               </div>
